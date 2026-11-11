@@ -1,0 +1,11 @@
+{
+  "config": {
+    "default": true,
+    // Tables and long lines in the docs are intentional
+    "MD013": false,
+    "MD033": false,
+    "MD041": false,
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["**/node_modules/**", "**/.next/**", "**/out/**", "**/cdk.out/**"],
+}

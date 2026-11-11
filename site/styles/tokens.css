@@ -1,0 +1,52 @@
+/* Design tokens. Source of truth: DESIGN_SYSTEM.md. Components use these via Tailwind, never raw hex. */
+/* Near-black with an orange accent is the default look; light is opt-in through the theme toggle. */
+
+:root {
+  color-scheme: dark;
+  --bg: #0b0b0e;
+  --bg-deep: #08080a;
+  --surface: #141418;
+  --border: #2a2a31;
+  --text: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --accent: #ff9a1f;
+  --accent-hover: #ffb454;
+  --accent-strong: #ff8a1f;
+  --accent-strong-hover: #ffa23d;
+  --accent-contrast: #0b0b0e;
+  --accent-soft: #2a1b08;
+  --accent-soft-text: #ffd9a3;
+  --focus-ring: #ffb454;
+  --warning-soft: #3a2e0a;
+  --warning-text: #fde68a;
+  --shadow-hover: 0 12px 32px rgb(0 0 0 / 0.35);
+  --header-bg: rgb(11 11 14 / 0.85);
+  --hero-glow: rgb(255 138 31 / 0.22);
+  --success: #34d399;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-deep: #fff7ed;
+  --surface: #fafaf9;
+  --border: #e7e5e4;
+  --text: #18181b;
+  --text-muted: #52525b;
+  --accent: #c2410c;
+  --accent-hover: #9a3412;
+  --accent-strong: #c2410c;
+  --accent-strong-hover: #9a3412;
+  --accent-contrast: #ffffff;
+  --accent-soft: #ffedd5;
+  --accent-soft-text: #7c2d12;
+  --focus-ring: #c2410c;
+  --warning-soft: #fef3c7;
+  --warning-text: #78350f;
+  --shadow-hover: 0 12px 28px rgb(15 23 42 / 0.1);
+  --header-bg: rgb(255 255 255 / 0.85);
+  --hero-glow: rgb(249 115 22 / 0.16);
+  --success: #059669;
+}

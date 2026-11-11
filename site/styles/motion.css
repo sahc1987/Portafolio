@@ -1,0 +1,139 @@
+/*
+ * Motion layer. Rules (DESIGN_SYSTEM.md):
+ * - Only transform, opacity and SVG stroke are animated.
+ * - Everything sits behind prefers-reduced-motion: no-preference.
+ * - Content is visible without JS: the JS fallback only hides elements once html.io-reveal is set.
+ * - Native scroll-driven animations first; IntersectionObserver fallback adds .is-visible.
+ */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grow-down {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes header-fill {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero entrance, sequenced by --i */
+  .hero-in {
+    animation: rise-in 700ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 80ms);
+  }
+
+  /* Floating tech chips around the hero portrait */
+  .float {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -1.5s);
+  }
+
+  .lift {
+    transition:
+      transform 200ms var(--ease-out),
+      box-shadow 200ms var(--ease-out),
+      border-color 200ms var(--ease-out);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+
+    .draw {
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    .timeline-line {
+      transform-origin: top;
+      animation: grow-down linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 70%;
+    }
+
+    .header-fill {
+      animation: header-fill linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 96px;
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    html.io-reveal .reveal:not(.is-visible) {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    html.io-reveal .reveal {
+      transition:
+        opacity 600ms var(--ease-out),
+        transform 600ms var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 60ms);
+    }
+
+    .draw {
+      transition: stroke-dashoffset 1200ms var(--ease-out);
+    }
+    html:not(.io-reveal) .draw,
+    .is-visible .draw {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift:hover {
+    border-color: var(--accent);
+  }
+}

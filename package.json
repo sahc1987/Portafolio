@@ -1,0 +1,43 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "description": "Saúl Hernández portfolio: Next.js static site on AWS (S3 + CloudFront), infra in CDK",
+  "workspaces": [
+    "site",
+    "infra"
+  ],
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "npm run dev -w site",
+    "build": "npm run build -w site",
+    "preview": "npm run preview -w site",
+    "test": "vitest run --coverage",
+    "test:e2e": "npm run test:e2e -w site",
+    "typecheck": "npm run typecheck -w site && npm run typecheck -w infra",
+    "lint": "eslint . && shellcheck scripts/*.sh && markdownlint-cli2",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run test:e2e",
+    "cdk": "npm run cdk -w infra --",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.6",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "globals": "^17.14.0",
+    "markdownlint-cli2": "^0.24.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  },
+  "overrides": {
+    "playwright-core": "1.63.0"
+  }
+}

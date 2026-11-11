@@ -1,0 +1,8 @@
+{
+  "app": "npx tsx bin/portfolio.ts",
+  "watch": { "include": ["bin/**", "lib/**", "functions/**"] },
+  "context": {
+    "@aws-cdk/aws-s3:createDefaultLoggingPolicy": true,
+    "@aws-cdk/core:checkSecretUsage": true
+  }
+}

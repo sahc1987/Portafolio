@@ -1,0 +1,377 @@
+import { CONTACT, LINKS, STACKS } from './shared';
+import type { Content } from './types';
+
+export const en = {
+  locale: 'en',
+  profile: {
+    name: 'Saúl Hernández',
+    headline: 'Full Stack Developer',
+    pitch:
+      'I build production web apps end to end with React, TypeScript, Node.js and Java. Seven years in software as a developer, team lead and QA lead, then, since 2020, running a UPS Store and building the software that runs it.',
+    location: 'San Salvador, El Salvador',
+    availability: 'Open to remote roles from El Salvador, or on-site and hybrid in San Salvador.',
+    ...CONTACT,
+  },
+  projects: [
+    {
+      slug: 'complete-pool-app',
+      title: 'Complete Pool App',
+      kind: 'client',
+      summary:
+        'Operations system for a pool service company: scheduling, field work, estimates, invoices and payroll, on web and mobile.',
+      problem:
+        'Complete Pool Service ran on paper: jobs, estimates, invoices and crew hours lived in notebooks and spreadsheets, so nothing was in one place.',
+      built: [
+        'Web app with Next.js App Router and Server Actions, plus an Expo mobile app for managers and field workers on the same contracts.',
+        'Three roles (Owner, Admin, Worker) with recurring jobs, a daily route map, and a submit, approve or flag workflow for completed work.',
+        'Estimates customers approve with an on-screen signature, and invoices with PDF and QR payment links through Stripe.',
+        'Inventory with material requests from the field, payroll hours and an owner KPI dashboard.',
+      ],
+      hardParts: [
+        'Role rules enforced on the server: you can only manage roles below yours, and the last manager can never be removed.',
+        'Partial payments and reversals that keep every invoice balance correct.',
+        'Shared Zod schemas so web and mobile validate data exactly the same way.',
+        'PostgreSQL row level security on Supabase, with JWT access and rotating refresh tokens for mobile.',
+      ],
+      stack: STACKS.pool,
+      links: { demo: LINKS.poolDemo, repo: LINKS.poolRepo },
+      diagram: 'pool-app',
+      diagramLabel:
+        'Architecture: Next.js web app and Expo mobile app share Zod contracts and call the same server layer, which uses Prisma on Supabase PostgreSQL and Storage, NextAuth, and Stripe.',
+      note: 'In acceptance testing with the owner. The live demo is read-only.',
+    },
+    {
+      slug: 'ecommerce',
+      title: 'Ecommerce Platform',
+      kind: 'personal',
+      summary:
+        'General-purpose online store with a customer shop, a staff back office and a mobile app on one API, built with security first.',
+      problem:
+        'Most store tutorials skip what breaks in production: two people buying the last unit, double-clicked checkouts, refunds and abuse. I built a store that handles them.',
+      built: [
+        'Customer web shop, staff and admin back office, and a React Native app, all on one Node.js and Express API.',
+        'Product variants with their own SKU, stock and price; guest carts with timed stock holds.',
+        'Stripe card payments and cash on delivery, shipping with tracking, cancellations, returns and refunds.',
+        'KPI dashboard, a first-run setup wizard, and SEO with schema.org data.',
+      ],
+      hardParts: [
+        'Orders are placed inside a transaction with row-level locks, so concurrent purchases cannot oversell stock.',
+        'Idempotency keys make a repeated checkout request create one order, not two.',
+        'httpOnly-cookie JWT auth, bcrypt, Helmet headers, per-IP rate limiting and magic-byte checks on uploaded images.',
+        'Tests on every layer: node:test for the API, Vitest for web, Jest for mobile.',
+      ],
+      stack: STACKS.ecommerce,
+      links: { repo: LINKS.ecommerceRepo },
+      diagram: 'ecommerce',
+      diagramLabel:
+        'Architecture: web shop, back office and React Native app call one Express API, which uses PostgreSQL with row locks, Redis, Stripe and Cloudinary.',
+      note: 'Code on GitHub; a live demo is coming.',
+    },
+    {
+      slug: 'centraldesk',
+      title: 'CentralDesk',
+      kind: 'internal',
+      summary:
+        'Operations portal used every day by four UPS Store locations: mailbox renewals, package tracking, claims, print jobs, schedules and sales.',
+      problem:
+        'As General Manager I watched the team juggle spreadsheets, paper forms and several carrier sites. Renewals slipped, claims got lost, and nobody had one view of the day.',
+      built: [
+        'One portal with per-store sign-in, global search, notifications and a home dashboard of sales, print jobs and shipments.',
+        'Mailbox renewals with email reminders that carry Stripe payment links, plus detection of incomplete mailbox files.',
+        'Daily forms (claims, waivers, refunds, opening and closing), print quotes and jobs, and multi-carrier tracking.',
+        'Time clock, scheduling, overtime and PTO for staff.',
+      ],
+      hardParts: [
+        'Role-based permissions (owner, manager, associate) with data separated per store; the owner sees all four.',
+        'Renewal payments confirmed by Stripe webhooks, with manual confirmation as a fallback.',
+        'Sales and time-clock data pulled in through POS and time clock integrations.',
+      ],
+      stack: STACKS.centraldesk,
+      links: {},
+      diagram: 'centraldesk',
+      diagramLabel:
+        'Architecture: React portal calls a Node.js and Express REST API, which connects to the POS, the time clock, carrier tracking APIs, Stripe and email.',
+      note: 'Internal tool: no public link or screenshots. Happy to walk through it in an interview.',
+    },
+    {
+      slug: 'hospital-app',
+      title: 'Hospital Management System',
+      kind: 'learning',
+      summary:
+        'Spring Boot learning project: a hospital back office for patients, appointments, admissions, lab, pharmacy, billing and payroll.',
+      problem:
+        'I wanted hands-on practice with modern Spring Boot and Java 21 on a domain with real rules: who may see clinical data, and what must never overlap.',
+      built: [
+        'Spring Boot API with Spring Security and JWT, and a React and TypeScript dashboard.',
+        'Seven roles, from receptionist to doctor to HR, each seeing only the modules it needs.',
+        'Appointments in free slots, admissions to rooms, lab tests, pharmacy stock, itemized bills and monthly payroll.',
+      ],
+      hardParts: [
+        'Permissions live in the database and are checked by the API on every request; admins change them from an access matrix screen.',
+        'Business rules: no overlapping bookings, no admission to a full room, no closing a visit without a diagnosis, no payment above what is owed.',
+        'Flyway migrations, Redis caching and Docker Compose for the full stack.',
+      ],
+      stack: STACKS.hospital,
+      links: { repo: LINKS.hospitalRepo },
+      diagram: 'hospital-app',
+      diagramLabel:
+        'Architecture: React dashboard calls a Spring Boot API that checks a role permissions table on every request, backed by PostgreSQL with Flyway and Redis.',
+      note: 'A learning project, not used in production.',
+    },
+  ],
+  experience: [
+    {
+      slug: 'independent',
+      company: 'Independent',
+      role: 'Full Stack Developer',
+      location: 'Remote',
+      start: '2023',
+      end: null,
+      highlights: [
+        'Small-scale client work for local businesses plus personal portfolio projects, built end to end.',
+        'Designed and built Complete Pool App for Complete Pool Service Inc.: requirements, data model, development, testing and deployment.',
+        'Built a full stack ecommerce platform with transactional, oversell-proof checkout.',
+      ],
+      stack: ['Next.js', 'React', 'TypeScript', 'Node.js', 'Prisma', 'PostgreSQL'],
+    },
+    {
+      slug: 'ups-store',
+      company: 'The UPS Store, Brickell',
+      role: 'General Manager',
+      location: 'Miami, FL',
+      start: '2020-10',
+      end: null,
+      highlights: [
+        'Run daily operations of one of the top three highest-performing UPS Store locations in Florida, per UPS franchise reports.',
+        'Own P&L, inventory, vendor relationships, staff development and business clients in the Brickell corridor.',
+        'Built CentralDesk, the operations portal now used daily by four locations.',
+      ],
+      stack: ['React', 'Node.js', 'Express'],
+    },
+    {
+      slug: 'telus',
+      company: 'Telus International',
+      role: 'Full Stack Developer',
+      start: '2019-03',
+      end: '2020-09',
+      highlights: [
+        'Built and maintained React and TypeScript front ends.',
+        'Built a full stack app (React, Node.js, Cassandra) to manage the platform APIs published through a Kong gateway run by the infrastructure team.',
+        'Maintained CI/CD pipelines in Jenkins and OpenShift, and Tableau Server dashboards for release quality KPIs.',
+      ],
+      stack: ['React', 'TypeScript', 'Node.js', 'Cassandra', 'Jenkins', 'OpenShift', 'Docker'],
+    },
+    {
+      slug: 'omnisport',
+      company: 'Omnisport El Salvador',
+      role: 'Team Lead & QA Lead',
+      location: 'El Salvador',
+      start: '2017-09',
+      end: '2019-03',
+      highlights: [
+        'Led 5 developers and 3 testers from requirements to production rollout.',
+        'Defined the end-to-end test strategy: test plans, regression suites and patch releases.',
+        'Cleared a backlog of roughly 50 projects stalled in testing and client acceptance.',
+      ],
+      stack: ['Java', 'JSF', 'JPA', 'Oracle DB', 'WebLogic'],
+    },
+    {
+      slug: 'mitratech',
+      company: 'Mitratech Holdings',
+      role: 'Team Lead & Software Engineer',
+      start: '2013-11',
+      end: '2017-08',
+      highlights: [
+        'Led up to 12 developers and testers across client projects.',
+        'Moved the HotDocs document-generation implementation from Internet Explorer only to a cross-browser version.',
+        'Ran sprint planning and fixed critical production bugs in legal software.',
+      ],
+      stack: ['Java', 'JavaScript', 'HotDocs', '.NET / C#', 'SQL Server', 'Oracle'],
+    },
+  ],
+  services: [
+    {
+      slug: 'frontend',
+      title: 'Frontend development',
+      description: 'Responsive, accessible interfaces with React, Next.js and TypeScript.',
+    },
+    {
+      slug: 'backend',
+      title: 'Backend development',
+      description: 'REST APIs and services with Node.js, Express, Java and Spring Boot.',
+    },
+    {
+      slug: 'databases',
+      title: 'Databases',
+      description:
+        'Schema design and queries in PostgreSQL, MySQL and MongoDB, with Redis for caching.',
+    },
+    {
+      slug: 'cloud',
+      title: 'Cloud and delivery',
+      description: 'Docker, CI/CD and AWS deployments, with testing built into the pipeline.',
+    },
+  ],
+  skills: [
+    {
+      slug: 'frontend',
+      label: 'Frontend',
+      skills: ['React', 'Next.js', 'TypeScript', 'Angular', 'Tailwind CSS', 'HTML5', 'CSS3'],
+    },
+    {
+      slug: 'backend',
+      label: 'Backend',
+      skills: [
+        'Node.js',
+        'Express',
+        'Java',
+        'Spring Boot',
+        'Hibernate / JPA',
+        'Prisma',
+        'C# / .NET',
+        'REST APIs',
+      ],
+    },
+    {
+      slug: 'databases',
+      label: 'Databases',
+      skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Oracle', 'SQL Server', 'Cassandra', 'Redis'],
+    },
+    {
+      slug: 'devops',
+      label: 'DevOps & Cloud',
+      skills: [
+        'Docker',
+        'Kubernetes',
+        'OpenShift',
+        'Jenkins',
+        'CI/CD',
+        'AWS',
+        'Google Cloud',
+        'Git',
+      ],
+    },
+    {
+      slug: 'quality',
+      label: 'Testing & Quality',
+      skills: [
+        'Test planning',
+        'Regression testing',
+        'UAT',
+        'Postman',
+        'REST Assured',
+        'Jest',
+        'Vitest',
+        'Jira',
+        'TestRail',
+        'Zephyr',
+        'SonarQube',
+      ],
+    },
+  ],
+  education: {
+    institution: 'Universidad de El Salvador',
+    degree: 'Computer Systems Engineering (Ingeniería de Sistemas Informáticos)',
+    start: '2008',
+    end: '2013',
+  },
+  cv: { locale: 'en', path: '/cv/CV_Saul_Hernandez_EN.pdf', label: 'Download CV (PDF)' },
+  ui: {
+    metaTitle: 'Saúl Hernández · Full Stack Developer',
+    metaDescription:
+      'Full stack developer in San Salvador. React, TypeScript, Node.js and Java. Projects, experience and CV.',
+    skipToContent: 'Skip to content',
+    nav: {
+      label: 'Sections',
+      about: 'About',
+      services: 'Services',
+      hireMe: 'Hire me',
+      projects: 'Projects',
+      experience: 'Experience',
+      skills: 'Skills',
+      contact: 'Contact',
+    },
+    sections: {
+      servicesEyebrow: 'What I do',
+      services: 'How I can help your team',
+      servicesIntro: 'The parts of a web product I have built and shipped.',
+      projectsEyebrow: '01 / Work',
+      projects: 'Projects',
+      projectsIntro:
+        'Four projects, each labeled for what it is. Open a case study for the problem, what I built and the hard parts.',
+      experienceEyebrow: '02 / Resume',
+      experience: 'Experience',
+      skillsEyebrow: '03 / Toolbox',
+      skills: 'Skills',
+      education: 'Education',
+      contactEyebrow: 'Contact',
+      contact: "Let's work together",
+      contactIntro:
+        'Hiring for a full stack role? Email is the fastest way to reach me. I reply in English or Spanish.',
+    },
+    cta: {
+      downloadCv: 'Download CV',
+      email: 'Email',
+      linkedin: 'LinkedIn',
+      whatsapp: 'WhatsApp',
+      github: 'GitHub',
+    },
+    kinds: {
+      client: 'Client project',
+      internal: 'Internal tool',
+      personal: 'Personal project',
+      learning: 'Spring Boot learning project',
+    },
+    caseStudy: {
+      open: 'Read case study',
+      problem: 'The problem',
+      built: 'What I built',
+      hardParts: 'Hard parts solved',
+      stack: 'Stack',
+      demo: 'Live demo',
+      repo: 'Code',
+    },
+    hero: {
+      greeting: "Hello, I'm",
+      viewWork: 'View my work',
+      contactMe: 'Contact me',
+      status: 'Open to full stack roles',
+      photoAlt: 'Portrait of Saúl Hernández',
+      stackLabel: 'The stack I ship with',
+    },
+    about: {
+      eyebrow: 'About me',
+      title: 'Building software that runs real businesses',
+      body: [
+        'I am a full stack developer from San Salvador. I spent seven years building and testing enterprise software at Mitratech, Omnisport and Telus International, leading teams of developers and testers along the way.',
+        'Since 2020 I have managed a UPS Store in Miami. Instead of stepping away from code, I built the portal four stores now run on every day. I am moving back to El Salvador and returning to software full time.',
+      ],
+      stats: [
+        { value: '7+', label: 'Years in software' },
+        { value: '12', label: 'Largest team led' },
+        { value: '2', label: 'Languages: Spanish and English' },
+      ],
+      info: {
+        location: 'Location',
+        email: 'Email',
+        whatsapp: 'WhatsApp',
+        whatsappValue: 'Send me a message',
+        languages: 'Languages',
+        languagesValue: 'Spanish (native), English (professional)',
+        availability: 'Availability',
+        availabilityValue: 'Remote, or on-site and hybrid in San Salvador',
+      },
+    },
+    present: 'Present',
+    theme: { toLight: 'Switch to light theme', toDark: 'Switch to dark theme' },
+    language: { switchTo: 'ES, ver en español', short: 'ES' },
+    footer: {
+      tagline: 'Full stack developer building web software end to end.',
+      quickLinks: 'Quick links',
+      follow: 'Follow me',
+      builtWith: 'Built with Next.js, deployed on AWS.',
+      source: 'Source code',
+      social: 'Social links',
+    },
+  },
+} as const satisfies Content;
